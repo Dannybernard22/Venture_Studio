@@ -23,21 +23,40 @@
 
   <!-- HERO -->
   <section class="hero">
-    <img src="hero-bg.jpg" class="hero-geo" alt="" />
-    <p class="hero-eyebrow fade-up">Creative agency — est. 2024</p>
-    <h1 class="hero-headline fade-up">We make brands <em>unforgettable.</em></h1>
-    <p class="hero-sub fade-up">Social media branding, cinematic VFX, and polished UI design — all under one roof.</p>
-    <div class="hero-actions fade-up">
-      <button class="btn-primary">See our work</button>
-      <button class="btn-ghost">Learn more</button>
+
+    <!-- VIDEO BACKGROUND -->
+    <video
+      class="hero-video"
+      src="hero-video.mp4"
+      autoplay
+      muted
+      loop
+      playsinline>
+    </video>
+  
+    <!-- DARK OVERLAY -->
+    <div class="hero-overlay"></div>
+  
+    <!-- ALL HERO TEXT CONTENT -->
+    <div class="hero-content">
+      <p class="hero-eyebrow fade-up">Creative agency — est. 2024</p>
+      <h1 class="hero-headline fade-up" style="font-size: clamp(5rem, 7vw, 9rem);">We make brands <em>unforgettable.</em></h1>
+      <p class="hero-sub fade-up">Social media branding, cinematic VFX, and polished UI design — all under one roof.</p>
+      <div class="hero-actions fade-up">
+        <a href="contact.html" class="btn-primary" style="text-decoration:none;">See our work</a>
+        <button class="btn-ghost">Learn more</button>
+      </div>
     </div>
+  
+    <!-- TICKER PILLS -->
     <div class="hero-ticker">
       <div class="ticker-item">Social Branding</div>
       <div class="ticker-item">VFX &amp; Motion</div>
       <div class="ticker-item">UI Design</div>
     </div>
+  
   </section>
-
+  
   <!-- MARQUEE -->
   <div class="marquee-wrap">
     <div class="marquee-track">
