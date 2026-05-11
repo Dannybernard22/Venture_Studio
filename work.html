@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Work — Venture Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0B0B0F;
+    --surface: #14141C;
+    --white: #F0EEFF;
+    --purple: #7C3AED;
+    --violet: #7C3AED;
+    --glow: #A855F7;
+    --accent-gradient: linear-gradient(135deg, #7C3AED, #A855F7);
+    --muted: #7B6FA8;
+    --card-bg: #14141C;
+    --border: rgba(168,85,247,0.12);
+    --border-mid: rgba(168,85,247,0.25);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: 'Sora', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,11,15,0.92);
+    backdrop-filter: blur(16px);
+  }
+  .nav-logo { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--glow); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+  .nav-cta { background: var(--accent-gradient); color: #fff; border: none; padding: 0.6rem 1.4rem; border-radius: 100px; font-family: 'Sora', sans-serif; font-weight: 500; font-size: 0.875rem; cursor: pointer; text-decoration: none; transition: opacity 0.2s, transform 0.15s; display: inline-block; }
+  .nav-cta:hover { opacity: 0.88; transform: scale(0.98); }
+
+  /* ── HERO ── */
+  .work-hero {
+    padding: 7rem 3rem 5rem;
+    border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .work-hero::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
+  .eyebrow { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--glow); margin-bottom: 1.25rem; font-weight: 400; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--glow); }
+  .hero-heading { font-family: 'Sora', sans-serif; font-size: clamp(3.5rem, 7vw, 6.5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 0.92; }
+  .hero-heading em { font-style: normal; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-right { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end; padding-bottom: 0.5rem; }
+  .hero-count { font-family: 'Sora', sans-serif; font-size: 4rem; font-weight: 800; letter-spacing: -0.04em; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .hero-count-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem;
+    background: var(--surface);
+    position: sticky; top: 65px; z-index: 90;
+    overflow-x: auto;
+  }
+  .filter-btn {
+    border: 1px solid var(--border); border-radius: 100px;
+    padding: 0.45rem 1.1rem; font-size: 0.78rem; font-family: 'Sora', sans-serif;
+    font-weight: 400; color: var(--muted); background: none;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+  .filter-btn:hover { border-color: var(--border-mid); color: var(--white); }
+  .filter-btn.active {
+    background: var(--accent-gradient); color: #fff;
+    border-color: transparent; font-weight: 500;
+  }
+
+  /* ── GRID ── */
+  .work-grid-wrap { padding: 3rem; }
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 60px;
+    gap: 1.5rem;
+  }
+
+  /* Card sizing spans */
+  .card-wide  { grid-column: span 8; grid-row: span 7; }
+  .card-tall  { grid-column: span 4; grid-row: span 7; }
+  .card-med   { grid-column: span 5; grid-row: span 6; }
+  .card-med2  { grid-column: span 7; grid-row: span 6; }
+  .card-sq    { grid-column: span 4; grid-row: span 6; }
+  .card-wide2 { grid-column: span 8; grid-row: span 6; }
+  .card-full  { grid-column: span 12; grid-row: span 5; }
+
+  /* Project Card */
+  .project-card {
+    position: relative; overflow: hidden;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s;
+  }
+  .project-card:hover { transform: translateY(-4px); border-color: var(--border-mid); }
+  .project-card:hover .card-overlay { opacity: 1; }
+  .project-card:hover .card-info { transform: translateY(0); opacity: 1; }
+  .project-card:hover .placeholder-img { transform: scale(1.04); }
+
+  /* Placeholder image area */
+  .placeholder-img {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    overflow: hidden;
+  }
+  .placeholder-img svg.bg-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* Each placeholder has a unique style */
+  .ph-branding    { background: linear-gradient(135deg, #0f0a1f 0%, #1a0f3a 50%, #0d1a2e 100%); }
+  .ph-uiux        { background: linear-gradient(135deg, #0a0f1f 0%, #0f1a35 50%, #1a0f2e 100%); }
+  .ph-vfx         { background: linear-gradient(135deg, #0f0820 0%, #1a0830 50%, #0d0f28 100%); }
+  .ph-social      { background: linear-gradient(135deg, #0a1020 0%, #100f30 50%, #1a0a28 100%); }
+  .ph-motion      { background: linear-gradient(135deg, #0f0f20 0%, #180a2e 50%, #0a1020 100%); }
+
+  /* Placeholder center icon */
+  .ph-center {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  }
+  .ph-icon {
+    width: 56px; height: 56px; border-radius: 14px;
+    background: rgba(168,85,247,0.12);
+    border: 1px solid rgba(168,85,247,0.2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ph-icon svg { width: 26px; height: 26px; stroke: var(--glow); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .ph-label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(168,85,247,0.4); }
+
+  /* Decorative elements inside placeholders */
+  .ph-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(168,85,247,0.07);
+    pointer-events: none;
+  }
+  .ph-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(168,85,247,0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .ph-glow {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Card overlay on hover */
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(11,11,15,0.95) 0%, rgba(11,11,15,0.3) 50%, transparent 100%);
+    opacity: 0; transition: opacity 0.35s;
+    z-index: 2;
+  }
+
+  /* Card info */
+  .card-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.75rem 1.75rem 1.5rem;
+    z-index: 3;
+    transform: translateY(10px); opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s;
+  }
+  .card-category {
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--glow); margin-bottom: 0.4rem; font-weight: 500;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .card-category::before { content: ''; display: block; width: 16px; height: 1px; background: var(--glow); }
+  .card-title { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; line-height: 1.2; }
+  .card-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+  .card-arrow {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent-gradient);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 3;
+    transform: scale(0.7) rotate(-45deg); opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s;
+  }
+  .project-card:hover .card-arrow { transform: scale(1) rotate(0deg); opacity: 1; }
+  .card-arrow svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Always-visible tag on card */
+  .card-tag {
+    position: absolute; top: 1.25rem; left: 1.25rem;
+    background: rgba(11,11,15,0.7);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); z-index: 3;
+    backdrop-filter: blur(8px);
+  }
+
+  /* Add image instruction */
+  .card-hint {
+    position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+    font-size: 0.62rem; color: rgba(168,85,247,0.25); white-space: nowrap;
+    z-index: 1; letter-spacing: 0.08em;
+    border: 1px dashed rgba(168,85,247,0.15);
+    border-radius: 100px; padding: 0.25rem 0.7rem;
+  }
+
+  /* Hidden class for filtering */
+  .project-card.hidden {
+    display: none;
+  }
+
+  /* ── FEATURED ROW LABEL ── */
+  .row-label {
+    padding: 0 3rem 1rem;
+    font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 0.75rem;
+  }
+  .row-label::before { content: ''; display: block; width: 20px; height: 1px; background: var(--muted); }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 8rem 3rem; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 2rem;
+    position: relative; overflow: hidden;
+    border-top: 1px solid var(--border);
+  }
+  .cta-section::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(124,58,237,0.09) 0%, transparent 70%); pointer-events: none; }
+  .cta-ring { position: absolute; border-radius: 50%; border: 1px solid var(--border); pointer-events: none; }
+  .cta-ring-1 { width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .cta-ring-2 { width: 500px; height: 500px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .cta-ring-3 { width: 700px; height: 700px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .cta-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--glow); font-weight: 400; position: relative; z-index: 1; }
+  .cta-heading { font-family: 'Sora', sans-serif; font-size: clamp(2.5rem, 5.5vw, 5rem); font-weight: 800; letter-spacing: -0.035em; line-height: 0.95; max-width: 640px; position: relative; z-index: 1; }
+  .cta-heading em { font-style: normal; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cta-sub { font-size: 0.95rem; color: var(--muted); max-width: 420px; line-height: 1.75; position: relative; z-index: 1; }
+  .cta-btn { background: var(--accent-gradient); color: #fff; border: none; padding: 1.1rem 2.75rem; border-radius: 100px; font-family: 'Sora', sans-serif; font-weight: 500; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.6rem; transition: opacity 0.2s, transform 0.15s; position: relative; z-index: 1; }
+  .cta-btn:hover { opacity: 0.88; transform: scale(0.98); }
+  .cta-btn svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--white); text-decoration: none; }
+  .footer-logo span { color: var(--glow); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 0.75rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { opacity: 0; animation: fadeUp 0.7s ease both; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.15s; }
+  .fade-up:nth-child(3) { animation-delay: 0.25s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .work-grid { grid-template-columns: repeat(6, 1fr); }
+    .card-wide, .card-med2, .card-wide2 { grid-column: span 6; }
+    .card-tall, .card-med, .card-sq { grid-column: span 3; }
+    .card-full { grid-column: span 6; }
+  }
+  @media (max-width: 640px) {
+    .work-grid { grid-template-columns: 1fr; grid-auto-rows: 280px; }
+    .card-wide, .card-tall, .card-med, .card-med2, .card-sq, .card-wide2, .card-full { grid-column: span 1; grid-row: span 1; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .work-grid-wrap { padding: 1.5rem; }
+    .filter-bar { padding: 1rem 1.5rem; }
+    .work-hero { padding: 5rem 1.5rem 3rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .cta-section { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Venture<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="work.html" class="active">Work</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="contact.html">Start a project</a>
+</nav>
+
+<!-- HERO -->
+<section class="work-hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow fade-up">Our work</p>
+      <h1 class="hero-heading fade-up">Selected<br><em>projects.</em></h1>
+    </div>
+    <div class="hero-right fade-up">
+      <span class="hero-count">20+</span>
+      <span class="hero-count-label">Projects showcased</span>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterWork('all', this)">All</button>
+  <button class="filter-btn" onclick="filterWork('branding', this)">Branding</button>
+  <button class="filter-btn" onclick="filterWork('uiux', this)">UI / UX</button>
+  <button class="filter-btn" onclick="filterWork('vfx', this)">VFX &amp; Motion</button>
+  <button class="filter-btn" onclick="filterWork('social', this)">Social Media</button>
+  <button class="filter-btn" onclick="filterWork('motion', this)">3D &amp; Motion</button>
+</div>
+
+<!-- GRID -->
+<div class="work-grid-wrap">
+  <div class="work-grid" id="work-grid">
+
+    <!-- 01 Featured — Branding -->
+    <div class="project-card card-wide" data-cat="branding">
+      <div class="placeholder-img ph-branding">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:400px;height:400px;top:-100px;right:-50px;"></div>
+        <div class="ph-ring" style="width:260px;height:260px;top:50%;left:60%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:420px;height:420px;top:50%;left:60%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:60%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <p class="ph-label">Branding</p>
+        </div>
+      </div>
+      <span class="card-tag">Branding</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">Brand Identity</p>
+        <h3 class="card-title">Venture Brand System</h3>
+        <p class="card-desc">Complete brand identity — logo, typography, colour system and guidelines.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 02 Tall — UI/UX -->
+    <div class="project-card card-tall" data-cat="uiux">
+      <div class="placeholder-img ph-uiux">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:300px;height:300px;top:-60px;left:50%;transform:translateX(-50%)"></div>
+        <div class="ph-ring" style="width:180px;height:180px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <p class="ph-label">UI/UX</p>
+        </div>
+      </div>
+      <span class="card-tag">UI / UX</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">UI Design</p>
+        <h3 class="card-title">Dashboard UI</h3>
+        <p class="card-desc">Clean and functional dashboard design for a SaaS platform.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 03 Med — Social -->
+    <div class="project-card card-med" data-cat="social">
+      <div class="placeholder-img ph-social">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:280px;height:280px;top:0;left:50%;transform:translateX(-50%)"></div>
+        <div class="ph-ring" style="width:160px;height:160px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.4 2 2 0 0 1 3.62 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.97-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <p class="ph-label">Social</p>
+        </div>
+      </div>
+      <span class="card-tag">Social Media</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">Social Media</p>
+        <h3 class="card-title">Instagram Campaign</h3>
+        <p class="card-desc">Full content strategy and visual system for a product launch.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 04 Med2 — VFX -->
+    <div class="project-card card-med2" data-cat="vfx">
+      <div class="placeholder-img ph-vfx">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:200px;height:200px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:360px;height:360px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <p class="ph-label">VFX</p>
+        </div>
+      </div>
+      <span class="card-tag">VFX &amp; Motion</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">VFX</p>
+        <h3 class="card-title">Product VFX Reel</h3>
+        <p class="card-desc">Cinematic visual effects and compositing for a product ad campaign.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 05 Square — Motion -->
+    <div class="project-card card-sq" data-cat="motion">
+      <div class="placeholder-img ph-motion">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:260px;height:260px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:150px;height:150px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+          <p class="ph-label">Motion</p>
+        </div>
+      </div>
+      <span class="card-tag">3D &amp; Motion</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">3D Motion</p>
+        <h3 class="card-title">3D Brand Animation</h3>
+        <p class="card-desc">Looping 3D motion graphic for social media and brand presentations.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 06 Wide2 — Branding -->
+    <div class="project-card card-wide2" data-cat="branding">
+      <div class="placeholder-img ph-branding">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:500px;height:300px;top:50%;left:40%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:200px;height:200px;top:50%;left:40%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:40%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <p class="ph-label">Branding</p>
+        </div>
+      </div>
+      <span class="card-tag">Branding</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">Brand Identity</p>
+        <h3 class="card-title">Startup Brand Package</h3>
+        <p class="card-desc">Full identity system including logo, colour palette, type system and brand guidelines.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 07 Square — UI/UX -->
+    <div class="project-card card-sq" data-cat="uiux">
+      <div class="placeholder-img ph-uiux">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:240px;height:240px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:140px;height:140px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <p class="ph-label">UI/UX</p>
+        </div>
+      </div>
+      <span class="card-tag">UI / UX</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">App Design</p>
+        <h3 class="card-title">Mobile App UI</h3>
+        <p class="card-desc">Clean and intuitive mobile app interface design with full UX flow.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 08 Tall — VFX -->
+    <div class="project-card card-tall" data-cat="vfx">
+      <div class="placeholder-img ph-vfx">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:300px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:170px;height:170px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <p class="ph-label">VFX</p>
+        </div>
+      </div>
+      <span class="card-tag">VFX</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">VFX &amp; Compositing</p>
+        <h3 class="card-title">Short Film VFX</h3>
+        <p class="card-desc">Visual effects compositing for an independent short film production.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 09 Wide — Social -->
+    <div class="project-card card-wide" data-cat="social">
+      <div class="placeholder-img ph-social">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:500px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:220px;height:220px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:380px;height:380px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.4 2 2 0 0 1 3.62 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.97-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <p class="ph-label">Social Media</p>
+        </div>
+      </div>
+      <span class="card-tag">Social Media</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">Social Media</p>
+        <h3 class="card-title">Brand Social Presence</h3>
+        <p class="card-desc">Full social media visual identity, content grid and story templates.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 10 Med — Motion -->
+    <div class="project-card card-med" data-cat="motion">
+      <div class="placeholder-img ph-motion">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:280px;height:280px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:160px;height:160px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+          <p class="ph-label">Motion</p>
+        </div>
+      </div>
+      <span class="card-tag">3D &amp; Motion</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">Motion Graphics</p>
+        <h3 class="card-title">Motion Title Sequence</h3>
+        <p class="card-desc">Animated title sequence designed for a YouTube brand channel.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+    <!-- 11 Med2 — Branding -->
+    <div class="project-card card-med2" data-cat="branding">
+      <div class="placeholder-img ph-branding">
+        <div class="ph-dots"></div>
+        <div class="ph-glow" style="width:420px;height:280px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-ring" style="width:180px;height:180px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ph-center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <div class="ph-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <p class="ph-label">Branding</p>
+        </div>
+      </div>
+      <span class="card-tag">Branding</span>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <p class="card-category">Brand Identity</p>
+        <h3 class="card-title">Restaurant Rebrand</h3>
+        <p class="card-desc">Complete visual rebrand for a premium dining concept including menus and signage.</p>
+      </div>
+      <p class="card-hint">Replace with your project image</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-ring cta-ring-1"></div>
+  <div class="cta-ring cta-ring-2"></div>
+  <div class="cta-ring cta-ring-3"></div>
+  <p class="cta-label">Let's create together</p>
+  <h2 class="cta-heading">Your project could be <em>next.</em></h2>
+  <p class="cta-sub">Have a project in mind? Let's build something bold, modern, and impactful together.</p>
+  <a class="cta-btn" href="contact.html">
+    Start a project
+    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</section>
+
+<footer>
+  <a class="footer-logo" href="index.html">Venture<span>.</span></a>
+  <div class="footer-links">
+    <a href="work.html">Work</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <p class="footer-copy">© 2024 Venture Studio. All rights reserved.</p>
+</footer>
+
+<script>
+function filterWork(cat, btn) {
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Filter cards
+  document.querySelectorAll('.project-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+</script>
+</body>
+</html>

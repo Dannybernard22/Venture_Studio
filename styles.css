@@ -79,7 +79,7 @@ nav {
 }
 
 .nav-cta {
-  background: var(--violet);
+  background: var(--accent-gradient);
   color: #fff;
   border: none;
   padding: 0.6rem 1.4rem;
@@ -207,7 +207,7 @@ video {
 
 /* ── BUTTONS ── */
 .btn-primary {
-  background: var(--violet);
+  background: var(--accent-gradient);
   color: #fff;
   border: none;
   padding: 0.85rem 2rem;
@@ -248,7 +248,7 @@ video {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding: 1rem 0;
-  background: var(--card-bg);
+  background: var(--surface);
 }
 
 .marquee-track {
@@ -294,7 +294,7 @@ video {
 /* ── SERVICES ── */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1px;
   border: 1px solid var(--border);
 }
@@ -362,7 +362,7 @@ video {
 
 /* ── STATS ── */
 .stats-band {
-  background: var(--card-bg);
+  background: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding: 3.5rem 3rem;
@@ -380,7 +380,10 @@ video {
   font-size: 2.8rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: var(--glow);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stat-label {

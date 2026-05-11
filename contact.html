@@ -12,8 +12,8 @@
     --white: #F0EEFF;
     --purple: #6D28D9;
     --violet: #7C3AED;
-    --glow: #A78BFA;
-    --muted: #7B6FA8;
+    --glow: #6D28D9;
+    --muted: rgb(255, 255, 255);
     --card-bg: #100E1A;
     --border: rgba(167,139,250,0.12);
     --border-focus: rgba(167,139,250,0.5);
@@ -248,52 +248,62 @@
 </div>
 
 <script>
-function sendEmail() {
-  const fname = document.getElementById('fname').value.trim();
-  const lname = document.getElementById('lname').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const message = document.getElementById('message').value.trim();
-  const errorEl = document.getElementById('form-error');
-
-  if (!fname || !lname || !email || !message) {
-    errorEl.style.display = 'block';
-    return;
+  async function sendEmail() {
+    const fname   = document.getElementById('fname').value.trim();
+    const lname   = document.getElementById('lname').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const errorEl = document.getElementById('form-error');
+  
+    if (!fname || !lname || !email || !message) {
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
+  
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+  
+    try {
+      const response = await fetch('https://formspree.io/f/mjglwaql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: fname,
+          lastName:  lname,
+          email:     email,
+          message:   message
+        })
+      });
+  
+      if (response.ok) {
+        document.getElementById('form-wrap').style.display = 'none';
+        document.getElementById('success-state').style.display = 'flex';
+      } else {
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Send message';
+      }
+    } catch (err) {
+      errorEl.textContent = 'Network error. Please try again.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Send message';
+    }
   }
-  errorEl.style.display = 'none';
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Opening mail...';
-
-  const subject = encodeURIComponent('New Project Inquiry from ' + fname + ' ' + lname);
-  const body = encodeURIComponent(
-    'Hi Venture,\n\n' +
-    'Name: ' + fname + ' ' + lname + '\n' +
-    'Email: ' + email + '\n\n' +
-    'Message:\n' + message + '\n\n' +
-    '---\nSent via the Venture website contact form.'
-  );
-
-  window.location.href = 'mailto:venturedigitalmarketingagency@gmail.com?subject=' + subject + '&body=' + body;
-
-  setTimeout(() => {
-    document.getElementById('form-wrap').style.display = 'none';
-    const s = document.getElementById('success-state');
-    s.style.display = 'flex';
-  }, 1200);
-}
-
-function resetForm() {
-  document.getElementById('fname').value = '';
-  document.getElementById('lname').value = '';
-  document.getElementById('email').value = '';
-  document.getElementById('message').value = '';
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = false;
-  btn.innerHTML = 'Send message <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-  document.getElementById('form-wrap').style.display = 'block';
-  document.getElementById('success-state').style.display = 'none';
-}
-</script>
+  
+  function resetForm() {
+    document.getElementById('fname').value = '';
+    document.getElementById('lname').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('message').value = '';
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('submit-btn').textContent = 'Send message';
+    document.getElementById('form-wrap').style.display = 'block';
+    document.getElementById('success-state').style.display = 'none';
+  }
+  </script>
 </body>
 </html>
